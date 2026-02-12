@@ -3,142 +3,937 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>EduPredict AI | Future Insights</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/all.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduPredict AI · Student Performance Predictor</title>
+
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            background: #0f172a;
-            color: white;
             font-family: 'Inter', sans-serif;
+            background: linear-gradient(145deg, #0f0c1f 0%, #1a1730 100%);
+            color: #ffffff;
+            line-height: 1.6;
+            min-height: 100vh;
+            position: relative;
             overflow-x: hidden;
         }
 
-        .glass-panel {
-            background: rgba(30, 41, 59, 0.7);
-            backdrop-filter: blur(15px);
+        /* Animated Background */
+        .gradient-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .gradient-sphere {
+            position: absolute;
+            width: 800px;
+            height: 800px;
+            top: -400px;
+            right: -200px;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, rgba(99, 102, 241, 0) 70%);
+            border-radius: 50%;
+            animation: float 20s ease-in-out infinite;
+        }
+
+        .gradient-sphere-2 {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            bottom: -300px;
+            left: -200px;
+            background: radial-gradient(circle, rgba(139, 92, 246, 0.12) 0%, rgba(139, 92, 246, 0) 70%);
+            border-radius: 50%;
+            animation: float 25s ease-in-out infinite reverse;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+
+            33% {
+                transform: translate(30px, -30px) rotate(120deg);
+            }
+
+            66% {
+                transform: translate(-20px, 20px) rotate(240deg);
+            }
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Navigation */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 0;
+            margin-bottom: 2rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+            text-decoration: none;
+        }
+
+        .logo i {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            padding: 0.75rem;
+            border-radius: 14px;
+            font-size: 1.25rem;
+            box-shadow: 0 8px 16px rgba(99, 102, 241, 0.2);
+        }
+
+        .logo span {
+            background: linear-gradient(to right, #fff, #e0e7ff);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .badge {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            padding: 0.5rem 1rem;
+            border-radius: 100px;
+            font-size: 0.85rem;
+            color: #a5b4fc;
             border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 24px;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
-        .input-box {
-            background: rgba(15, 23, 42, 0.6);
-            border: 1px solid #334155;
-            color: white;
-            border-radius: 12px;
-            padding: 12px;
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            margin-bottom: 3rem;
+            animation: fadeInUp 0.6s ease-out;
         }
 
-        .input-box:focus {
-            background: rgba(15, 23, 42, 0.8);
-            border-color: #38bdf8;
-            color: white;
-            box-shadow: 0 0 10px rgba(56, 189, 248, 0.3);
+        .hero h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            margin-bottom: 1rem;
+            line-height: 1.2;
         }
 
-        .btn-ai {
-            background: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%);
-            border: none;
-            font-weight: bold;
-            border-radius: 12px;
-            transition: 0.4s;
+        .gradient-text {
+            background: linear-gradient(135deg, #818cf8, #c084fc);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
-        .btn-ai:hover {
-            transform: scale(1.02);
-            box-shadow: 0 0 20px rgba(56, 189, 248, 0.4);
+        .hero p {
+            color: #94a3b8;
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
         }
 
-        .result-card {
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
             border-radius: 20px;
-            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-            border: 2px solid #38bdf8;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            background: rgba(255, 255, 255, 0.05);
+            transform: translateY(-5px);
+            border-color: rgba(99, 102, 241, 0.3);
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-label {
+            color: #94a3b8;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Main Card */
+        .main-card {
+            background: rgba(17, 25, 40, 0.75);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 32px;
+            padding: 2.5rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            margin-bottom: 2rem;
+        }
+
+        /* Form Layout */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+        }
+
+        .form-section {
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 20px;
+            padding: 1.75rem;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .form-section h3 {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .form-section h3 i {
+            color: #818cf8;
+        }
+
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .form-group label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #cbd5e1;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-group label i {
+            color: #818cf8;
+            width: 1.25rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1.5px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            color: white;
+            transition: all 0.2s ease;
+        }
+
+        .form-control:hover {
+            background: rgba(0, 0, 0, 0.3);
+            border-color: rgba(129, 140, 248, 0.3);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #818cf8;
+            background: rgba(0, 0, 0, 0.4);
+            box-shadow: 0 0 0 4px rgba(129, 140, 248, 0.1);
+        }
+
+        select.form-control {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            padding-right: 2.5rem;
+        }
+
+        .input-hint {
+            display: block;
+            font-size: 0.7rem;
+            color: #64748b;
+            margin-top: 0.25rem;
+        }
+
+        /* Predict Button */
+        .btn-predict {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            border: none;
+            border-radius: 14px;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-predict:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 20px 30px -10px rgba(99, 102, 241, 0.4);
+        }
+
+        .btn-predict:active {
+            transform: translateY(0);
+        }
+
+        .btn-predict i {
+            transition: transform 0.3s ease;
+        }
+
+        .btn-predict:hover i:last-child {
+            transform: translateX(5px);
+        }
+
+        /* Loading State */
+        .loading {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .loading.active {
+            display: flex;
+        }
+
+        .spinner {
+            width: 60px;
+            height: 60px;
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            border-top-color: #818cf8;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 1rem;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Results Section */
+        .results-section {
+            margin-top: 2.5rem;
+            padding-top: 2.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            animation: fadeInUp 0.5s ease-out;
+        }
+
+        .score-display {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 20px;
+        }
+
+        .score-circle {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: var(--score-gradient, linear-gradient(135deg, #6366f1, #8b5cf6));
+            box-shadow: 0 20px 30px -10px rgba(99, 102, 241, 0.3);
+        }
+
+        .score-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            line-height: 1;
+        }
+
+        .score-max {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .score-info h4 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--score-color, inherit);
+        }
+
+        .score-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            border-radius: 100px;
+            color: #10b981;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .confidence-meter {
+            margin-top: 1rem;
+        }
+
+        .confidence-bar {
+            width: 200px;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 0.5rem;
+        }
+
+        .confidence-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #10b981, #34d399);
+            border-radius: 4px;
+            transition: width 1s ease;
+            width: var(--confidence-width, 0%);
+        }
+
+        /* Insights Grid */
+        .insights-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .insight-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--insight-color, white);
+            margin-bottom: 0.5rem;
+        }
+
+        .insight-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .insight-card:hover {
+            background: rgba(255, 255, 255, 0.03);
+            transform: translateY(-5px);
+            border-color: rgba(129, 140, 248, 0.3);
+        }
+
+        .insight-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .insight-message {
+            color: #94a3b8;
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+
+        .insight-action {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #818cf8;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        /* Alert Messages */
+        .alert {
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            animation: slideIn 0.3s ease;
+        }
+
+        .alert-error {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            color: #f87171;
+        }
+
+        .alert-warning {
+            background: rgba(245, 158, 11, 0.1);
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            color: #fbbf24;
+        }
+
+        .alert-success {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            color: #34d399;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .score-display {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .navbar {
+                flex-direction: column;
+                gap: 1rem;
+            }
         }
     </style>
 </head>
 
 <body>
-    <div class="container py-5">
-        <div class="text-center mb-5">
-            <h1 class="fw-bold display-4">EduPredict <span class="text-info">AI</span></h1>
-            <p class="text-secondary">Advanced Student Performance Analytics Engine</p>
+    <!-- Animated Background -->
+    <div class="gradient-bg">
+        <div class="gradient-sphere"></div>
+        <div class="gradient-sphere-2"></div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loading" class="loading">
+        <div class="spinner"></div>
+        <div style="color: white; font-size: 1.1rem;">Analyzing student data...</div>
+    </div>
+
+    <div class="container">
+        <!-- Navigation -->
+        <nav class="navbar">
+            <a href="/" class="logo">
+                <i class="fas fa-graduation-cap"></i>
+                <span>EduPredict<span style="color: #818cf8;">AI</span></span>
+            </a>
+            <div class="badge">
+                <i class="fas fa-robot"></i>
+                ML Model: Polynomial Regression
+            </div>
+        </nav>
+
+        <!-- Hero Section -->
+        <div class="hero">
+            <h1>
+                Predict Student <span class="gradient-text">Exam Scores</span>
+            </h1>
+            <p>Enter student details below to get AI-powered performance prediction and personalized insights</p>
         </div>
 
-        <div class="row justify-content-center">
-            <div class="col-lg-10 glass-panel p-5">
-                <form action="/predict" method="post">
-                    <div class="row g-4">
-                        <div class="col-md-4">
-                            <label class="form-label small text-uppercase fw-bold">Daily Study (Hrs)</label>
-                            <input type="number" step="0.1" name="Hours_Studied" class="form-control input-box"
-                                required>
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label small text-uppercase fw-bold">Attendance %</label>
-                            <input type="number" name="Attendance" class="form-control input-box" required>
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label small text-uppercase fw-bold">Previous Grade</label>
-                            <input type="number" name="Previous_Scores" class="form-control input-box" required>
-                        </div>
-
-                        <div class="col-md-3">
-                            <label class="form-label small text-uppercase fw-bold">Sleep Hours</label>
-                            <input type="number" name="Sleep_Hours" class="form-control input-box" required>
-                        </div>
-                        <div class="col-md-3">
-                            <label class="form-label small text-uppercase fw-bold">Motivation</label>
-                            <select name="Motivation_Level" class="form-select input-box">
-                                <option value="2">High</option>
-                                <option value="1">Medium</option>
-                                <option value="0">Low</option>
-                            </select>
-                        </div>
-                        <div class="col-md-3">
-                            <label class="form-label small text-uppercase fw-bold">Tutor Sessions</label>
-                            <input type="number" name="Tutoring_Sessions" class="form-control input-box" required>
-                        </div>
-                        <div class="col-md-3">
-                            <label class="form-label small text-uppercase fw-bold">Teacher Qual.</label>
-                            <select name="Teacher_Quality" class="form-select input-box">
-                                <option value="2">Excellent</option>
-                                <option value="1">Good</option>
-                                <option value="0">Average</option>
-                            </select>
-                        </div>
-
-                        <div class="col-md-6">
-                            <label class="form-label small text-uppercase fw-bold">Parental Involvement</label>
-                            <select name="Parental_Involvement" class="form-select input-box">
-                                <option value="2">High</option>
-                                <option value="1">Medium</option>
-                                <option value="0">Low</option>
-                            </select>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label small text-uppercase fw-bold">Internet Access</label>
-                            <select name="Access_to_Resources" class="form-select input-box">
-                                <option value="1">Enabled</option>
-                                <option value="0">Disabled</option>
-                            </select>
-                        </div>
-                    </div>
-                    <button type="submit" class="btn btn-ai w-100 mt-5 py-3 text-white fs-5">GENERATE
-                        PREDICTION</button>
-                </form>
-
-                {% if result %}
-                <div class="result-card mt-5 p-4 text-center animate__animated animate__zoomIn">
-                    <h3 class="text-secondary mb-0">Predicted Academic Score</h3>
-                    <div class="display-1 fw-bold text-info">{{ result }}%</div>
-                    <div class="progress mt-3" style="height: 10px; background: #334155;">
-                        <div class="progress-bar bg-info" style="width: {{ result }}%"></div>
-                    </div>
-                </div>
-                {% endif %}
+        <!-- Stats Grid -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value">9</div>
+                <div class="stat-label">Features</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">61.3%</div>
+                <div class="stat-label">R² Score</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">6607</div>
+                <div class="stat-label">Training Samples</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">±1.03</div>
+                <div class="stat-label">MAE</div>
             </div>
         </div>
+
+        <!-- Main Card -->
+        <div class="main-card">
+            <!-- Error Messages -->
+            {% if errors %}
+            <div class="alert alert-error">
+                <i class="fas fa-exclamation-circle"></i>
+                <div>
+                    <strong>Please fix the following:</strong>
+                    <ul style="margin-top: 0.5rem; margin-left: 1.5rem;">
+                        {% for error in errors %}
+                        <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            {% endif %}
+
+            {% if error %}
+            <div class="alert alert-error">
+                <i class="fas {{ error_icon }}"></i>
+                <div>{{ error }}</div>
+            </div>
+            {% endif %}
+
+            {% if result.warnings %}
+            <div class="alert alert-warning">
+                <i class="fas fa-exclamation-triangle"></i>
+                <div>
+                    <strong>Warnings:</strong>
+                    <ul style="margin-top: 0.5rem; margin-left: 1.5rem;">
+                        {% for warning in result.warnings %}
+                        <li>{{ warning }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Prediction Form -->
+            <form id="predictForm" action="/predict" method="POST">
+                <div class="form-grid">
+                    <!-- Academic Metrics Section -->
+                    <div class="form-section">
+                        <h3>
+                            <i class="fas fa-book-open"></i>
+                            Academic Metrics
+                        </h3>
+
+                        <div class="form-group">
+                            <label>
+                                <i class="fas fa-clock"></i>
+                                Hours Studied (per week)
+                            </label>
+                            <input type="number" class="form-control" name="hours_studied" min="1" max="44" step="0.5"
+                                required value="{{ form_data.hours_studied if form_data else '20' }}">
+                            <span class="input-hint">Range: 1-44 hours</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label>
+                                <i class="fas fa-calendar-check"></i>
+                                Attendance (%)
+                            </label>
+                            <input type="number" class="form-control" name="attendance" min="60" max="100" step="0.1"
+                                required value="{{ form_data.attendance if form_data else '80' }}">
+                            <span class="input-hint">Range: 60-100%</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label>
+                                <i class="fas fa-history"></i>
+                                Previous Score
+                            </label>
+                            <input type="number" class="form-control" name="previous_scores" min="50" max="100"
+                                step="0.1" required value="{{ form_data.previous_scores if form_data else '75' }}">
+                            <span class="input-hint">Range: 50-100</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label>
+                                <i class="fas fa-chalkboard-teacher"></i>
+                                Tutoring Sessions (per week)
+                            </label>
+                            <input type="number" class="form-control" name="tutoring_sessions" min="0" max="8" step="1"
+                                required value="{{ form_data.tutoring_sessions if form_data else '1' }}">
+                            <span class="input-hint">Range: 0-8 sessions</span>
+                        </div>
+                    </div>
+
+                    <!-- Personal Factors Section -->
+                    <div class="form-section">
+                        <h3>
+                            <i class="fas fa-user"></i>
+                            Personal Factors
+                        </h3>
+
+                        <div class="form-group">
+                            <label>
+                                <i class="fas fa-bed"></i>
+                                Sleep Hours
+                            </label>
+                            <input type="number" class="form-control" name="sleep_hours" min="4" max="10" step="0.5"
+                                required value="{{ form_data.sleep_hours if form_data else '7' }}">
+                            <span class="input-hint">Range: 4-10 hours</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label>
+                                <i class="fas fa-family"></i>
+                                Parental Involvement
+                            </label>
+                            <select class="form-control" name="parental_involvement" required>
+                                <option value="Low" {% if form_data and form_data.parental_involvement=='Low'
+                                    %}selected{% endif %}>Low</option>
+                                <option value="Medium" {% if form_data and form_data.parental_involvement=='Medium'
+                                    %}selected{% endif %}>Medium</option>
+                                <option value="High" {% if form_data and form_data.parental_involvement=='High'
+                                    %}selected{% endif %}>High</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>
+                                <i class="fas fa-laptop"></i>
+                                Access to Resources
+                            </label>
+                            <select class="form-control" name="access_to_resources" required>
+                                <option value="Low" {% if form_data and form_data.access_to_resources=='Low'
+                                    %}selected{% endif %}>Low</option>
+                                <option value="Medium" {% if form_data and form_data.access_to_resources=='Medium'
+                                    %}selected{% endif %}>Medium</option>
+                                <option value="High" {% if form_data and form_data.access_to_resources=='High'
+                                    %}selected{% endif %}>High</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>
+                                <i class="fas fa-fire"></i>
+                                Motivation Level
+                            </label>
+                            <select class="form-control" name="motivation_level" required>
+                                <option value="Low" {% if form_data and form_data.motivation_level=='Low' %}selected{%
+                                    endif %}>Low</option>
+                                <option value="Medium" {% if form_data and form_data.motivation_level=='Medium'
+                                    %}selected{% endif %}>Medium</option>
+                                <option value="High" {% if form_data and form_data.motivation_level=='High' %}selected{%
+                                    endif %}>High</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>
+                                <i class="fas fa-chalkboard"></i>
+                                Teacher Quality
+                            </label>
+                            <select class="form-control" name="teacher_quality" required>
+                                <option value="Low" {% if form_data and form_data.teacher_quality=='Low' %}selected{%
+                                    endif %}>Low</option>
+                                <option value="Medium" {% if form_data and form_data.teacher_quality=='Medium'
+                                    %}selected{% endif %}>Medium</option>
+                                <option value="High" {% if form_data and form_data.teacher_quality=='High' %}selected{%
+                                    endif %}>High</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-predict" onclick="showLoading()">
+                    <i class="fas fa-calculator"></i>
+                    Predict Exam Score
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+            </form>
+
+            <!-- Results Section -->
+            {% if result %}
+            <div class="results-section">
+                <div class="score-display">
+                    <div class="score-circle"
+                        style="--score-gradient: linear-gradient(135deg, {{ result.level_color }}, {{ result.level_color }}dd);">
+                        <span class="score-number">{{ result.score }}</span>
+                        <span class="score-max">/100</span>
+                    </div>
+                    <div class="score-info">
+                        <h4 style="--score-color: {{ result.level_color }};">{{ result.level_icon }} {{ result.level }}
+                        </h4>
+                        <div class="score-badge">
+                            <i class="fas fa-shield-alt"></i>
+                            Confidence: {{ result.confidence }}%
+                        </div>
+                        <div class="confidence-meter">
+                            <div style="color: #94a3b8; font-size: 0.9rem;">Prediction Confidence</div>
+                            <div class="confidence-bar">
+                                <div class="confidence-fill" style="--confidence-width: {{ result.confidence }}%;">
+                                </div>
+                            </div>
+                        </div>
+                        <div style="color: #64748b; font-size: 0.8rem; margin-top: 0.5rem;">
+                            ⚡ {{ result.processing_time }} processing time
+                        </div>
+                    </div>
+                </div>
+
+                <h3 style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.5rem;">
+                    <i class="fas fa-lightbulb" style="color: #fbbf24;"></i>
+                    Personalized Insights & Recommendations
+                </h3>
+
+                <div class="insights-grid">
+                    {% for insight in result.insights %}
+                    <div class="insight-card">
+                        <div class="insight-icon">{{ insight.icon }}</div>
+                        <div class="insight-title" style="--insight-color: {{ insight.color }};">{{ insight.title }}
+                        </div>
+                        <div class="insight-message">{{ insight.message }}</div>
+                        <div class="insight-action">
+                            <i class="fas fa-bolt"></i>
+                            {{ insight.action }}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Footer -->
+        <div style="text-align: center; padding: 2rem 0; color: #64748b; font-size: 0.9rem;">
+            <i class="fas fa-brain" style="margin-right: 0.5rem;"></i>
+            Powered by Polynomial Regression | MAE: 1.03 | R²: 0.6133
+        </div>
     </div>
+
+    <!-- JavaScript -->
+    <script>
+        function showLoading() {
+            document.getElementById('loading').classList.add('active');
+        }
+
+        // Hide loading when page is fully loaded
+        window.addEventListener('load', function () {
+            document.getElementById('loading').classList.remove('active');
+        });
+
+        // Auto-hide alerts after 5 seconds
+        setTimeout(function () {
+            document.querySelectorAll('.alert').forEach(function (alert) {
+                alert.style.transition = 'opacity 0.5s';
+                alert.style.opacity = '0';
+                setTimeout(function () {
+                    alert.style.display = 'none';
+                }, 500);
+            });
+        }, 5000);
+
+        // Form validation
+        document.getElementById('predictForm').addEventListener('submit', function (e) {
+            let isValid = true;
+            const inputs = this.querySelectorAll('input[required]');
+
+            inputs.forEach(function (input) {
+                if (!input.value) {
+                    input.style.borderColor = '#ef4444';
+                    isValid = false;
+                } else {
+                    input.style.borderColor = '';
+                }
+            });
+
+            if (!isValid) {
+                e.preventDefault();
+                alert('Please fill all required fields');
+            }
+        });
+
+        // Smooth scroll to results
+        if (window.location.hash === '#results') {
+            document.querySelector('.results-section').scrollIntoView({
+                behavior: 'smooth'
+            });
+        }
+    </script>
 </body>
 
 </html>
